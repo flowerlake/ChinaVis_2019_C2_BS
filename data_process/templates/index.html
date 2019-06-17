@@ -1,0 +1,320 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+
+    {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
+    <script src="../static/lib/d3.v4.min.js"></script>
+    <script type="text/javascript" src="../static/js/viz.js"></script>
+    <title>Chinavis 2019 界面 1</title>
+    <link rel="stylesheet" href="../static/css/Framework1.css">
+    <link rel="stylesheet" href="../static/css/easydialog.css">
+
+
+    <style>
+        #dialog {
+            height: 500px;
+            width: 800px;
+            border: 2px solid #d5d9dc;
+            box-shadow: 2px 2px 2px 1px #666666;
+        }
+
+        #easyDialogTitle {
+            color: #d5d9dc;
+            font-size: 20px;
+        }
+
+        #closeBtn img {
+            width: 20px;
+            height: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="herder_bg" id="index"></div>
+        <a id="switch_btn2" href="/index"></a>
+        <a id="switch_btn5" href="/index2"></a>
+        <a id="switch_btn1" href="/index3"></a>
+        <a id="switch_btn3" href="/map4"></a>
+        <a id="switch_btn4" href="/map5"></a>
+    </header>
+
+    <article>
+        <div id='marker'></div>
+
+        <div id="hideleft"></div>
+
+        <div id="hideright"></div>
+
+
+        <!--弹窗设计-->
+        <div id="dialog" class="easyDialog_wrapper">
+            <div class="easyDialog_content">
+                <div class="easyDialog_title" id="easyDialogTitle">
+
+                    <a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn"><font
+                            color="aqua">饼状图</font> <img src="../static/image/close.png"></a>
+                    <!--                    <img src="./easydialog-v2.0/test_img.jpg" alt=""/>-->
+                </div>
+
+                <div class="sun-div">
+                    <div class="sun-title"><p color="aqua">饼状图</p></div>
+                    <div id="ec1" style="width: 780px;height: 453px;background-color: #1b2852" align="center"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--主图-->
+        <div class="wrap center">
+
+            <div id='map' style="width: 101%;height: 100%;  margin-left: -0.5%;top: 0.5%;position: relative;"></div>
+
+        </div>
+
+
+        <!--左-->
+        <div class="left_margin  box-div">
+
+            <div class="sun-div1">
+                <div class="sun-title"><span class="">时间选择器</span></div>
+                <ul class="">
+                    <div id='console'>
+
+                        <div class='session' id='sliderbar'>
+                            <h2 style="color: #fda400">时刻: <label id='active-hour' style="color: #fda400">12：00</label></h2>
+                            <br>
+                            <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12'/>
+                        </div>
+
+                    </div>
+                </ul>
+            </div>
+            <!--            右 2-->
+            <div class="sun-div2">
+                <div class="sun-title"><span class="">道路选择器</span></div>
+<br>
+
+                {#                <form method="post" action="">#}
+                {% csrf_token %}
+                选择街道：<select id="road" name="road">
+                <option value="" selected>请选择</option>
+                {% for road in roads %}
+                    {% for r in road %}
+                        <option value="{{ r }}">{{ r }}</option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+                <button type="submit" id="select_road">查询</button>
+                {#                </form>#}
+
+            <br>
+            <br>
+                <div id="select">
+                    {#这里不能直接加form表单，不然会重新再次刷新页面。因为form会默认刷新页面，button的类型为button或者submit都是可以的#}
+                    {#    https://blog.csdn.net/armarm9/article/details/81702584#}
+                    {#                    选择时间：<input type="text" id="multi_line_hour_time" name="multi_line_hour_time"/>#}
+                    <p>起始点|终点</p><input id='slider1' class='row' type='range' min='0' max='1' step='1' value="0"/>
+                    {#                    <button type="submit" id="button_time">查询</button>#}
+
+                </div>
+
+
+            </div>
+            <div class="sun-div3">
+                <div class="sun-title"><span class="">该路段随时间的平均速度分布</span></div>
+
+                <div id="line_hour_Chart" style="width: 400px;height: 230px"></div>
+
+            </div>
+
+
+        </div>
+
+        <!--右-->
+        <div class="right_margin box-div">
+            <!--            右 1-->
+
+            <!--右 3-->
+            {#            <div class="sun-div">#}
+            {#                <div class="sun-title"><span class="">道路平均速度分布</span></div>#}
+            {##}
+            {#                        <button onclick="myFunction()">点击这里</button>#}
+            {#                <div id="speed_Chart" style="width: 400px;height: 200px"></div>#}
+            {##}
+            {#            </div>#}
+
+        </div>
+    </article>
+</div>
+<!--引入对应的 js 文件-->
+</body>
+<script type="text/javascript" src="../static/lib/jquery-1.8.1.min.js"></script>
+
+<script type="text/javascript" src='../static/lib/mapbox-gl-v0.54.0.js'></script>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.js"></script>
+<script type="text/javascript" src="../static/js/change_overtime.js"></script>
+
+<script type="text/javascript">
+    let change_over_time = {{change_overtime|safe}};
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic3VtbWVyb25lIiwiYSI6ImNqdG1zYnV1ZDF6NjU0NGxmeXk3aTlxeTIifQ.Bl298aYMAylfBduuZeEgtQ';
+
+    let map = new mapboxgl.Map({
+        container: 'map', // container element id
+        style: 'mapbox://styles/summerone/cjwqji1wa2fm91cmr9t4wkl74',
+        center: [104.0410418234, 30.4665799517], // initial map center in [lon, lat]
+        zoom: 12
+    });
+
+    map_geojson(change_over_time, map);
+
+</script>
+
+<script type="text/javascript" src="../static/js/Framework1.js"></script>
+<script type="text/javascript" src="../static/lib/easydialog.js"></script>
+
+
+<script type="text/javascript">
+
+    let line_hour_Chart = echarts.init(document.getElementById('line_hour_Chart'));
+
+    $(function () {
+        $("#hideleft").toggle(
+            function () {
+                $(".left_margin").animate({marginLeft: "-125%"});
+                $(".wrap").animate({marginLeft: 0});
+                $(".center").animate({marginLeft: 0});
+            },
+            function () {
+                $(".center").animate({marginLeft: "25%"});
+                $(".left_margin").animate({marginLeft: "-100%"});
+            }
+        );
+        $("#hideright").toggle(
+            function () {
+                $(".right_margin").animate({marginRight: "-125%"});
+                $(".wrap").animate({marginRight: 0});
+                $(".center").animate({marginRight: 0});
+            },
+            function () {
+                $(".center").animate({marginRight: "25%"});
+                $(".right_margin").animate({marginLeft: "-25%"});
+            }
+        );
+    });
+    // easyDialog.open({
+    //     container: 'easyDialogWrapper',
+    //
+    // });
+
+
+</script>
+<script type="text/javascript">
+
+    $(window).resize(function ()// 绑定到窗口的这个事件中
+    {
+        // var whdef = 100/1920;// 表示1920的设计图,使用100PX的默认值
+        var whdef = 100 / 916;// 表示1920的设计图,使用100PX的默认值
+        var wH = window.innerHeight;// 当前窗口的高度
+        var wW = window.innerWidth;// 当前窗口的宽度
+        // var rem = wW * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+        var rem = wH * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+        $('html').css('font-size', rem + "px");
+        {#percent_Chart.resize();#}
+
+    });
+
+</script>
+<script type="text/javascript" src="../static/js/Framework1.js"></script>
+
+<script type="text/javascript">
+
+    document.getElementById('slider').addEventListener('input', function (e) {
+        let hour = parseInt(e.target.value);
+        // update the map
+        map.setFilter('collisions', ['==', ['number', ['get', 'Hour']], hour]);
+
+        // converting 0-23 hour to AMPM format
+        var ampm = hour >= 12 ? 'PM' : 'AM';
+        var hour12 = hour % 12 ? hour % 12 : 12;
+
+        // update text in the UI
+        document.getElementById('active-hour').innerText = hour +"：00";
+
+    });
+
+</script>
+<script type="text/javascript">
+    document.getElementById('slider1').addEventListener('input', function (e) {
+        let start_end = parseInt(e.target.value);
+
+        $.get('../static/data/end_output.geojson', function (result) {
+
+                {#$("div#map").empty();#}
+                {#let geo_map = new mapboxgl.Map({#}
+                {#    container: 'map', // container element id#}
+                {#    style: 'mapbox://styles/summerone/cjwrq4gyp061b1cue61526rb5',#}
+                {#    center: [104.0410418234, 30.4665799517], // initial map center in [lon, lat]#}
+                {#    zoom: 12#}
+                {##}
+                // 这里有一个问题，是因为django传递出来的值在URL中，会报411错误。
+                // TODO: 解决411报错问题
+                {#alert(result);#}
+                {#map_geojson(result, geo_map);#}
+            });
+    });
+</script>
+
+<script type="text/javascript">
+    $("button#select_road").click(function () {
+        let options = $("#road option:selected");
+        let road = options.val();
+
+
+        $.ajax({
+            url: 'index/',
+            type: 'POST',
+            data: {"road": road},
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+
+                // 在ajax内部，不能有任何的console.log语句，但是可以用alert来调试
+                // alert('ss');
+
+                // 用instanof判断传入的类型，可以判断出来是否为数组 https://segmentfault.com/a/1190000006150186
+                // alert(result["hour_data"] instanceof Array);
+
+                // ajax调用d3的图表，要通过d3图表的函数进行调用，不能直接重新画一个图，
+                // 首先这个时候通过选择该图所在的dom，调用empty方法清空div，然后直接调用该绘图函数，将数据传入即可。
+                // https://stackoverflow.com/questions/22784164/what-is-the-best-way-to-update-d3-charts-using-ajax
+
+                loadoOption2(result["speed"]);
+
+                {#$("div#map").empty();#}
+                {#let map = new mapboxgl.Map({#}
+                {#    container: 'map', // container element id#}
+                {#    style: 'mapbox://styles/summerone/cjwrq4gyp061b1cue61526rb5',#}
+                {#    center: [104.0410418234, 30.4665799517], // initial map center in [lon, lat]#}
+                {#    zoom: 12#}
+                {#;#}
+                {#map_geojson(result['map_roads'], map);#}
+                {#alert("success");#}
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    });
+
+</script>
+
+</html>

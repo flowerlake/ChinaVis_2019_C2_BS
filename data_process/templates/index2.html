@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>Mapbox GL Traffic</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script src='../static/lib/mapbox-gl-v0.54.0.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.css' rel='stylesheet'/>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.css'
+          type='text/css'/>
+    <script src='../static/js/mapbox-gl-traffic.js'></script>
+    <link href='../static/css/mapbox-gl-traffic.css' rel='stylesheet'/>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .info-box {
+            height: 100px;
+            width: 150px;
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, .9);
+            padding: 15px;
+            text-align: left;
+            font-family: 'Arial';
+            margin: 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='info-box'>
+    <p>Draw your route using the draw tools (25 points max)</p>
+    <div id='calculated-line'></div>
+</div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v9',
+        center: [104.0410418234, 30.4665799517],
+        zoom: 9,
+        hash: true
+    });
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new MapboxTraffic());
+
+
+
+
+    map.on('draw.create', updateArea);
+    map.on('draw.delete', updateArea1);
+    map.on('draw.update', updateArea1);
+    var draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+            polygon: true,
+            trash: true
+        }
+    });
+    map.addControl(draw);//draw 的空值栏
+    function updateArea(e) {
+        var data = draw.getAll();
+        console.log(data)
+        var features1 = map.queryRenderedFeatures(e.property, {
+            layers: ["road-label-large"]
+        });
+        // var features2 = map.queryRenderedFeatures(e.property, {
+        //     layers: ['road-label']
+        // });
+        console.log(features1)
+        //var feature1 = features1[0];
+        //document.getElementById('features2').innerHTML = JSON.stringify(features1[0].properties, null, 2);
+        //console.log(feature1)
+        //var feature2 = features2[0];
+        //document.getElementById('features').innerHTML = JSON.stringify(features2[0].properties.name, null,2);
+        //console.log(feature2)
+        var answer = document.getElementById('features');
+
+        if (data.features.length > 0) {
+            var area = turf.area(data);
+// restrict to area to 2 decimal points
+            var rounded_area = Math.round(area * 100) / 100;
+            //answer.innerHTML = '<p><strong>' + rounded_area + '</strong></p><p>square meters</p>';
+        } else {
+            answer.innerHTML = '';
+            if (e.type !== 'draw.delete') alert("Use the draw tools to draw a polygon!");
+        }
+        myFunction()
+    }
+
+    function updateArea1(e) {
+        var data = draw.getAll();
+        console.log(data)
+        var features1 = map.queryRenderedFeatures(e.property, {
+            layers: ['trees-point']
+        });
+        // var features2 = map.queryRenderedFeatures(e.property, {
+        //     layers: ['road-label']
+        // });
+        console.log(features1)
+        var feature1 = features1[0];
+        document.getElementById('features2').innerHTML = JSON.stringify(features1[0].properties, null, 2);
+        console.log(feature1)
+        //var feature2 = features2[0];
+        //document.getElementById('features').innerHTML = JSON.stringify(features2[0].properties.name, null,2);
+        //console.log(feature2)
+        var answer = document.getElementById('features');
+
+        if (data.features.length > 0) {
+            var area = turf.area(data);
+// restrict to area to 2 decimal points
+            var rounded_area = Math.round(area * 100) / 100;
+            answer.innerHTML = '<p><strong>' + rounded_area + '</strong></p><p>square meters</p>';
+        } else {
+            answer.innerHTML = '';
+            if (e.type !== 'draw.delete') alert("Use the draw tools to draw a polygon!");
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

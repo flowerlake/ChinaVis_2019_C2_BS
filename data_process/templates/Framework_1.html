@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <!--     <link rel="stylesheet" href='./change_overtime.css'>-->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
+    <title>Chinavis 2019 界面 1</title>
+    <link rel="stylesheet" href="css/Framework1.css">
+    <link rel="stylesheet" href="css/easydialog.css">
+    <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="js/echarts4.min.js"></script>
+
+    <script type="text/javascript" src="js/Framework1.js"></script>
+    <script type="text/javascript" src="js/easydialog.js"></script>
+    <script type="text/javascript">
+        <!--
+        $(window).resize(function ()// 绑定到窗口的这个事件中
+        {
+            // var whdef = 100/1920;// 表示1920的设计图,使用100PX的默认值
+            var whdef = 100 / 916;// 表示1920的设计图,使用100PX的默认值
+            var wH = window.innerHeight;// 当前窗口的高度
+            var wW = window.innerWidth;// 当前窗口的宽度
+            // var rem = wW * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+            var rem = wH * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+            $('html').css('font-size', rem + "px");
+            myChart1.resize();
+            myChart2.resize();
+            myChart3.resize();
+
+
+        });
+        //-->
+    </script>
+    <style>
+        #dialog {
+            height: 600px;
+            width: 900px;
+            border: 2px solid #d5d9dc;
+            box-shadow: 2px 2px 2px 1px #666666;
+        }
+
+        #easyDialogTitle {
+            color: #d5d9dc;
+            font-size: 20px;
+        }
+
+        #closeBtn img {
+            width: 20px;
+            height: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div id='marker'></div>
+<div class="container">
+    <header>
+        <div class="herder_bg"></div>
+        <a id="switch_btn" href="Framework_2.html"></a>
+    </header>
+    <article>
+        <div id="hideleft"></div>
+
+        <div id="hideright"></div>
+
+        <!--        <div class="easyDialog_wrapper" id="easyDialogWrapper">-->
+        <!--            <div class="easyDialog_content">-->
+        <!--                <div class="easyDialog_title" id="easyDialogTitle">-->
+        <!--                    <a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn"><img-->
+        <!--                            src="./close.png"></a>-->
+        <!--                    House price trend-->
+        <!--                </div>-->
+        <!--                <div><img src="./easydialog-v2.0/test_img.jpg" alt=""/></div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div id="dialog" class="easyDialog_wrapper">
+            <div class="easyDialog_content">
+                <div class="easyDialog_title" id="easyDialogTitle">
+                    <a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn"><font
+                            color="red">饼状图</font> <img src="easydialog-v2.0/close.png"></a>
+                    <!--                    <img src="./easydialog-v2.0/test_img.jpg" alt=""/>-->
+                </div>
+
+                <div class="sun-div">
+                    <div class="sun-title"><font color="aqua">饼状图</font></div>
+                    <div id="ec1" style="width: 780px;height: 453px;background-color: #1b2852" align="center"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--主图-->
+        <div class="wrap">
+            <div class="center">
+
+                <div id='map'
+                     style="width: 98%;height: 97%;  margin-left: 1%;top: 1.5%;position: relative;"></div>
+
+            </div>
+        </div>
+
+
+        <!--左-->
+        <div class="left_margin  box-div">
+            <div class="sun-div">
+                <div class="sun-title"><span class="">办学性质分布</span></div>
+                <!--                button-->
+                <button onclick="myFunction()">点击这里</button>
+
+                <!--                <div id="ec1" class="left-ec"></div>-->
+            </div>
+            <div class="sun-div">
+                <div class="sun-title"><span class="">机构数量变化趋势</span></div>
+
+                <div id="ec3" class="left-ec"></div>
+            </div>
+<!--            <div class="sun-div div_btm">-->
+<!--                <div class="sun-title"><span class="">建设目标达成情况</span></div>-->
+<!--                <div id="ec2" class="left-ec"></div>-->
+<!--            </div>-->
+        </div>
+
+        <!--右 1-->
+        <div class="right_margin box-div">
+            <div class="sun-div">
+                <ul class="">
+                    <div id='console'>
+                        <h1 style="color: #ffffff">热力图交互时间轴</h1>
+                        <!--        交互的颜色对话框-->
+                        <div class='session'>
+                            <h2 style="color: #ffffff">Casualty</h2>
+                            <div class='row colors'>
+                            </div>
+                            <div class='row labels'>
+                                <div class='label'>0</div>
+                                <div class='label'>1</div>
+                                <div class='label'>2</div>
+                                <div class='label'>3</div>
+                                <div class='label'>4</div>
+                                <div class='label'>5+</div>
+                            </div>
+                            <div class='session' id='sliderbar'>
+                                <h2 style="color: #ffffff">Hour: <label id='active-hour'>12PM</label></h2>
+                                <input id='slider' class='row' type='range' min='0' max='23' step='1'
+                                       value='12'/>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!--            右 2-->
+            <div class="sun-div">
+                <div class="sun-title"><span class="">筛选框</span></div>
+                <ul class="">
+
+                    <li>
+
+                        </br>
+                        筛选所在街道：<select id="seDj" name="seDj" onchange="searchDate()">
+                        <option value="" selected>请选择</option>
+                        <option value="3">高中</option>
+                        <option value="2">初中</option>
+                        <option value="1">小学</option>
+                        <option value="0">幼儿园</option>
+                    </select>
+                    </li>
+
+                    <li><span class="title1">街道情况：<font id="sumNum" color="#ffd700">200</font> 人</span></li>
+                </ul>
+            </div>
+            <!--            右 3-->
+<!--            <div class="sun-div div_btm">-->
+<!--                <div class="sun-title"><span class="">办学性质分布</span></div>-->
+
+<!--            </div>-->
+        </div>
+    </article>
+</div>
+<!--引入对应的 js 文件-->
+<script src="js/change_overtime.js"></script>
+
+<script type="text/javascript">
+    var myChart1 = echarts.init(document.getElementById('ec1'));
+    var myChart2 = echarts.init(document.getElementById('ec2'));
+    var myChart3 = echarts.init(document.getElementById('ec3'));
+
+
+    $(function () {
+        $("#hideleft").toggle(
+            function () {
+                $(".left_margin").animate({marginLeft: "-125%"});
+                $(".wrap").animate({marginLeft: 0});
+                $(".center").animate({marginLeft: 0});
+            },
+            function () {
+                $(".center").animate({marginLeft: "25%"});
+                $(".left_margin").animate({marginLeft: "-100%"});
+            }
+        );
+        $("#hideright").toggle(
+            function () {
+                $(".right_margin").animate({marginRight: "-125%"});
+                $(".wrap").animate({marginRight: 0});
+                $(".center").animate({marginRight: 0});
+            },
+            function () {
+                $(".center").animate({marginRight: "25%"});
+                $(".right_margin").animate({marginLeft: "-25%"});
+            }
+        );
+    });
+    // easyDialog.open({
+    //     container: 'easyDialogWrapper',
+    //
+    // });
+
+
+</script>
+</body>
+</html>

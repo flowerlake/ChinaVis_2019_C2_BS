@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+
+    <!--     <link rel="stylesheet" href='./change_overtime.css'>-->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet'/>
+    {#    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">#}
+
+
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css'
+          type='text/css'/>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+
+    <title>Chinavis 2019 界面 2</title>
+    <link rel="stylesheet" href="../static/css/Framework4.css">
+    <link rel="stylesheet" href="../static/css/easydialog.css">
+    <link rel="stylesheet" href="../static/css/mapbox-gl-traffic.css">
+
+    <style>
+        #dialog {
+            height: 600px;
+            width: 900px;
+            border: 2px solid #d5d9dc;
+            box-shadow: 2px 2px 2px 1px #666666;
+        }
+
+        #easyDialogTitle {
+            color: #d5d9dc;
+            font-size: 20px;
+        }
+
+        #closeBtn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .info-box {
+            height: 100px;
+            width: 300px;
+            {#position: absolute;#}
+            {#top: 20px;#}
+            {#left: 10px;#}
+        {#background-color: rgba(255, 255, 255, .9);#} padding: 15px;
+            text-align: left;
+            font-family: 'Arial';
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .calculation-box {
+            height: 75px;
+            width: 150px;
+            {#position: absolute;#}
+            {#bottom: 40px;#}
+            {#left: 10px;#}
+        {#background-color: rgba(255, 255, 255, .9);#} padding: 15px;
+            text-align: center;
+        }
+
+        p {
+            font-family: 'Open Sans';
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /*#features {*/
+        /*    position: absolute;*/
+        /*    top: 0;*/
+        /*    right: 0;*/
+        /*    bottom: 0;*/
+        /*    width: 300px;*/
+        /*    overflow: auto;*/
+        /*    background: rgba(255, 255, 255, 0.8);*/
+        /*}*/
+
+    </style>
+</head>
+<body>
+<div id='marker'></div>
+<div class="container">
+    <header>
+        <div class="herder_bg" id="index2"></div>
+        <a id="switch_btn2" href="/index"></a>
+        <a id="switch_btn5" href="/index2"></a>
+        <a id="switch_btn1" href="/index3"></a>
+        <a id="switch_btn3" href="/map4"></a>
+        <a id="switch_btn4" href="/map5"></a>
+    </header>
+    <article>
+        <div id="hideleft"></div>
+
+        <div id="hideright"></div>
+
+
+        <!--主图-->
+        <div class="wrap center">
+
+            <div id='map' style="width: 101%;height: 100%;  margin-left: -0.5%;top: 0.5%;position: relative;"></div>
+            {#            <div class='info-box'>#}
+            {#                <p>Draw your route using the draw tools (25 points max)</p>#}
+            {#                <div id='calculated-line'></div>#}
+            {#            </div>#}
+
+        </div>
+
+
+        <!--左-->
+        <div class="left_margin  box-div">
+            {#            <div class="sun-div1">#}
+            {#                <div class='info-box'>#}
+            {#                    <p>Draw your route using the draw tools (25 points max)</p>#}
+            {#                    <div id='calculated-line'></div>#}
+            {#                    <br>#}
+            {#                    <br>#}
+            {#                    <div class='calculation-box'>#}
+            {#                        <p>Draw a polygon using the draw tools.</p>#}
+            {#                        <div id='calculated-area'></div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <div class="sun-title"><span class="">办学性质分布</span></div>#}
+            {#                <!--                button-->#}
+            {#                <button onclick="myFunction()">点击这里</button>#}
+            {#                <pre id="features"></pre>#}
+            {#                <pre id="features2"></pre>#}
+            {#                <!--                <div id="ec1" class="left-ec"></div>-->#}
+            {#            </div>#}
+            <div class="sun-div2">
+                <div class="sun-title"><span class="">交通路线规划</span></div>
+                <div style="width: 400px;height: 200px">
+                    <div class='info-box'>
+                        <h2>疏导路线的距离及估计时长:</h2>
+                        <div id='calculated-line'></div>
+</div>
+                    <br>
+                        <div class='info-box'>
+                        <h2>等时圈图的面积:</h2>
+                        <div id='calculated-area'></div>
+                    </div>
+
+                </div>
+                {#                <h2 style="color: #fda400">Hour: <label id='active-hour' style="color: #fda400">12PM</label></h2>#}
+                {#                <input id='slider' class='row' type='range' min='0' max='23' step='1' value='12'/>#}
+                {#                <div id='pie_map' style="width: 600px;height: 600px"></div>#}
+                {#                <div id="easy_ec3" style="width: 600px;height: 600px"></div>#}
+
+            </div>
+
+
+        </div>
+
+        <!--右 1-->
+
+
+    </article>
+</div>
+
+<!--引入对应的 js 文件-->
+
+
+</body>
+<script type="text/javascript" src="../static/lib/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src='../static/lib/mapbox-gl-v0.54.0.js'></script>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.js"></script>
+<script type="text/javascript" src="../static/lib/easydialog.js"></script>
+<script type="text/javascript" src="../static/js/mapbox-gl-traffic.js"></script>
+<script type="text/javascript">
+    {#var myChart1 = echarts.init(document.getElementById('er1'));#}
+
+
+    $(function () {
+        $("#hideleft").toggle(
+            function () {
+                $(".left_margin").animate({marginLeft: "-125%"});
+                $(".wrap").animate({marginLeft: 0});
+                $(".center").animate({marginLeft: 0});
+            },
+            function () {
+                $(".center").animate({marginLeft: "25%"});
+                $(".left_margin").animate({marginLeft: "-100%"});
+            }
+        );
+        $("#hideright").toggle(
+            function () {
+                $(".right_margin").animate({marginRight: "-125%"});
+                $(".wrap").animate({marginRight: 0});
+                $(".center").animate({marginRight: 0});
+            },
+            function () {
+                $(".center").animate({marginRight: "25%"});
+                $(".right_margin").animate({marginLeft: "-25%"});
+            }
+        );
+    });
+    // easyDialog.open({
+    //     container: 'easyDialogWrapper',
+    //
+    // });
+
+
+</script>
+{#<script type="text/javascript" src="../static/js/Framework3.js"></script>#}
+<script type="text/javascript">
+    <!--
+    $(window).resize(function ()// 绑定到窗口的这个事件中
+    {
+        // var whdef = 100/1920;// 表示1920的设计图,使用100PX的默认值
+        var whdef = 100 / 916;// 表示1920的设计图,使用100PX的默认值
+        var wH = window.innerHeight;// 当前窗口的高度
+        var wW = window.innerWidth;// 当前窗口的宽度
+        // var rem = wW * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+        var rem = wH * whdef;// 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+        $('html').css('font-size', rem + "px");
+        {#myChart1.resize();#}
+
+
+    });
+    //-->
+</script>
+
+<script type="text/javascript">
+    function myFunction() {
+
+        //动态改变标题名称
+        {#document.getElementById#}
+        {#('easyDialogTitle').innerHTML = '<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn" color="#000"><img src="../static/image/close.png" alt=""></a>' + "拥堵区域基本信息"#}
+
+        easyDialog.open({
+
+            container: 'dialog',
+            fixed: false,
+            overlay: true
+
+        });
+
+    }
+</script>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w';
+    var map = new mapboxgl.Map({
+        container: 'map',
+
+        style: 'mapbox://styles/mapbox/outdoors-v10',
+
+        center: [104.0410418234, 30.4665799517],
+        zoom: 12,
+        hash: false
+    });
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new MapboxTraffic());
+    var draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+            line_string: true,
+            polygon: true,
+            trash: true
+        },
+        styles: [
+            // ACTIVE (being drawn)
+            // line stroke
+            {
+                "id": "gl-draw-line",
+                "type": "line",
+                "filter": ["all", ["==", "$type", "LineString"], ["!=", "mode", "static"]],
+                "layout": {
+                    "line-cap": "round",
+                    "line-join": "round"
+                },
+                "paint": {
+                    "line-color": "#FF0000",
+
+                    "line-dasharray": [0.2, 2],
+                    "line-width": 4,
+                    "line-opacity": 0.7
+                }
+            },
+            // vertex point halos
+            {
+                "id": "gl-draw-polygon-and-line-vertex-halo-active",
+                "type": "circle",
+                "filter": ["all", ["==", "meta", "vertex"], ["==", "$type", "Point"], ["!=", "mode", "static"]],
+                "paint": {
+                    "circle-radius": 10,
+                    "circle-color": "#FFF"
+                }
+            },
+            // vertex points
+            {
+                "id": "gl-draw-polygon-and-line-vertex-active",
+                "type": "circle",
+                "filter": ["all", ["==", "meta", "vertex"], ["==", "$type", "Point"], ["!=", "mode", "static"]],
+                "paint": {
+                    "circle-radius": 6,
+                    "circle-color": "#FF0000",
+                }
+            },
+        ]
+    });
+
+    // add the draw tool to the map
+    map.addControl(draw);
+
+    // add create, update, or delete actions
+
+    function updateRoute() {
+        removeRoute(); // overwrite any existing layers
+        var data = draw.getAll();
+        var answer = document.getElementById('calculated-line');
+
+        var lastFeature = data.features.length - 1;
+        var coords = data.features[lastFeature].geometry.coordinates;
+        var newCoords = coords.join(';')
+        getMatch(newCoords);
+    }
+
+    function updateArea(e) {
+        var data = draw.getAll();
+        var answer = document.getElementById('calculated-area');
+        if (data.features.length > 0) {
+            var area = turf.area(data);
+// restrict to area to 2 decimal points
+            var rounded_area = Math.round(area * 100) / 100;
+            answer.innerHTML = '<h3><strong>' + rounded_area + '</strong>平方米</h3>';
+        } else {
+            answer.innerHTML = '';
+            if (e.type !== 'draw.delete') alert("Use the draw tools to draw a polygon!");
+        }
+    }
+
+    // make a directions request
+    function getMatch(e) {
+        // https://www.mapbox.com/api-documentation/#directions
+        var url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' + e + '?geometries=geojson&steps=true&&access_token=' + mapboxgl.accessToken;
+        var req = new XMLHttpRequest();
+        req.responseType = 'json';
+        req.open('GET', url, true);
+        req.onload = function () {
+            var jsonResponse = req.response;
+            var distance = jsonResponse.routes[0].distance * 0.001; // convert to km
+            var duration = jsonResponse.routes[0].duration / 60; // convert to minutes
+            // add results to info box
+            document.getElementById('calculated-line').innerHTML = '<h3>距离: ' + distance.toFixed(2) + ' km</h3><h3>预计时长: ' + duration.toFixed(2) + ' mins</h3>';
+            var coords = jsonResponse.routes[0].geometry;
+            // add the route to the map
+            addRoute(coords);
+        };
+        req.send();
+    }
+
+    // adds the route as a layer on the map
+    function addRoute(coords) {
+        // check if the route is already loaded
+        if (map.getSource('route')) {
+            map.removeLayer('route')
+            map.removeSource('route')
+        } else {
+            map.addLayer({
+                "id": "route",
+                "type": "line",
+                "source": {
+                    "type": "geojson",
+                    "data": {
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": coords
+                    }
+                },
+                "layout": {
+                    "line-join": "round",
+                    "line-cap": "round"
+                },
+                "paint": {
+                    "line-color": "#FF0000",
+                    "line-width": 4,
+                    "line-opacity": 0.8
+                }
+            });
+            //}
+            ;
+        }
+    }
+
+
+    // remove the layer if it exists
+    function removeRoute() {
+        if (map.getSource('route')) {
+            map.removeLayer('route');
+            map.removeSource('route');
+            document.getElementById('calculated-line').innerHTML = '';
+        } else {
+            return;
+        }
+    }
+
+    map.on('draw.create', updateArea);
+    map.on('draw.delete', updateArea);
+    map.on('draw.update', updateArea);
+
+    map.on('draw.create', updateRoute);
+    map.on('draw.update', updateRoute);
+    map.on('draw.delete', removeRoute);
+</script>
+
+<script type="text/javascript" src="../static/lib/echarts.js"></script>
+<script type="text/javascript" src="../static/lib/echarts-wordcloud.js"></script>
+<script type="text/javascript">
+    var myChart_5 = echarts.init(document.getElementById('easy_ec3'));
+    option = {
+        angleAxis: {
+            type: 'category',
+            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+            z: 10,
+            axisLabel: {
+                color: "#fff"
+            },
+
+        },
+
+        radiusAxis: {
+            axisLabel: {
+                color: "#fff"
+            },
+        },
+        polar: {},
+        series: [{
+            type: 'bar',
+            data: [92, 96, 39, 55, 20, 38, 79, 277, 549, 586, 720, 759, 681, 830, 976, 1058, 1105, 1698, 1705, 860, 784, 701, 551, 589],
+            coordinateSystem: 'polar',
+            name: '该堵塞点入流量',
+            stack: 'a',
+            itemStyle: {
+                normal: {
+                    color: '#fda400'
+                }
+            }
+
+        }, {
+            type: 'bar',
+            data: [94, 82, 34, 53, 19, 36, 68, 242, 501, 590, 728, 777, 696, 856, 963, 1027, 1073, 1649, 1554, 863, 764, 693, 560, 643],
+            coordinateSystem: 'polar',
+            name: '该堵塞点出流量',
+            stack: 'a',
+
+        }],
+        legend: {
+            show: true,
+            data: ['该堵塞点入流量', '该堵塞点出流量'],
+            textStyle: {
+                color: "#fff"
+            }
+        }
+    };
+
+    myChart_5.setOption(option);
+</script>
+
+<script type="text/javascript">
+    var dom = document.getElementById("easy_ec1");
+    var myChart_6 = echarts.init(dom);
+    var app = {};
+    option = null;
+    //app.title = '笛卡尔坐标系上的热力图';
+
+    var result = [
+        {
+            "name": " 交通设施",
+            "value": 2056
+        },
+        {
+            "name": " 景点",
+            "value": 1878
+        },
+        {
+            "name": " 购物",
+            "value": 4401
+        },
+        {
+            "name": " 汽车服务",
+            "value": 2623
+        },
+        {
+            "name": " 医疗",
+            "value": 2772
+        },
+        {
+            "name": " 政府机构",
+            "value": 2744
+        },
+        {
+            "name": " 生活区",
+            "value": 8390
+        },
+        {
+            "name": " 教育培训",
+            "value": 3191
+        },
+        {
+            "name": " 金融",
+            "value": 1818
+        },
+        {
+            "name": " 美食",
+            "value": 1279
+        },
+        {
+            "name": " 酒店",
+            "value": 2091
+        },
+        {
+            "name": " 成都三里汽车技术有限公司",
+            "value": 570
+        },
+        {
+            "name": " 劲松开发区",
+            "value": 239
+        },
+        {
+            "name": " 文化传媒",
+            "value": 181
+        },
+        {
+            "name": " 生活服务",
+            "value": 433
+        },
+        {
+            "name": " 中德·英伦城邦J区",
+            "value": 21
+        },
+        {
+            "name": " 全家福芋儿鸡(老码头店)",
+            "value": 259
+        },
+        {
+            "name": " 公司企业",
+            "value": 715
+        },
+        {
+            "name": " 旅游景点",
+            "value": 272
+        },
+        {
+            "name": " 中和劲松500号附17号",
+            "value": 5
+        },
+        {
+            "name": " 维也纳酒店(会展中心店)",
+            "value": 19
+        },
+        {
+            "name": " 国美电器(华阳店)",
+            "value": 19
+        },
+        {
+            "name": " 天府新区公安分局",
+            "value": 251
+        },
+        {
+            "name": " 泊尔曼酒店",
+            "value": 59
+        },
+        {
+            "name": " 成都师范银都紫藤小学",
+            "value": 51
+        },
+        {
+            "name": " 成都新星国际幼稚园",
+            "value": 13
+        },
+        {
+            "name": " 休闲娱乐",
+            "value": 22
+        },
+        {
+            "name": " 中德·英伦城邦K区",
+            "value": 4
+        },
+        {
+            "name": " 博世车联(成都高新店)",
+            "value": 4
+        },
+        {
+            "name": " 馨绿家园",
+            "value": 12
+        },
+        {
+            "name": " 南新幼稚园",
+            "value": 3
+        },
+        {
+            "name": " 锦成汽修",
+            "value": 1
+        },
+        {
+            "name": " 劲松成仁路小区",
+            "value": 4
+        },
+        {
+            "name": " 华阳红房子",
+            "value": 2
+        },
+        {
+            "name": " 福满家超市(华阳大道四段店)",
+            "value": 1
+        },
+        {
+            "name": " 家乐福(华阳店)",
+            "value": 1
+        },
+        {
+            "name": " 中和劲松500号附27号",
+            "value": 1
+        }
+    ];
+
+    myChart_6.setOption({
+        tooltip: {
+            show: true
+        },
+        series: [{
+            type: "wordCloud",
+            gridSize: 20,
+            shape: 'diamond',
+            sizeRange: [12, 50],
+            width: 800,
+            height: 500,
+            textStyle: {
+                normal: {
+                    color: function () {
+                        var colors = ['#FFFF00', '#000', '#BBFFFF', "#00FFFF", "#EEEE00", '#ADFF2F', '#EEEE00', '#FF00FF', '#00FFFF', '#FFFF00', '#BBFFFF'];
+                        return colors[parseInt(Math.random() * 10)];
+                    }
+                },
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            data: result
+        }]
+
+    });
+</script>
+<script type="text/javascript">
+    let percent_Chart = echarts.init(document.getElementById('percent_Chart'));
+
+    //借用map和apply函数实现数组的初始化，参考链接：https://www.jianshu.com/p/ff5cbc2c69be
+    let line_smooth_x_data = Array.apply(null, Array(24)).map((_, h) => h);
+    let line_smooth_y_data = [0.19, 0.21, 0.16, 0.16, 0.10, 0.07, 0.09, 0.21, 0.28, 0.26, 0.32, 0.29, 0.32, 0.32, 0.32, 0.34, 0.28, 0.25, 0.32, 0.31, 0.34, 0.31, 0.29, 0.26]
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            position: function (pt) {
+                return [pt[0], '10%'];
+            }
+        },
+        // title: {
+        //     left: 'center',
+        //     text: '拥堵路段占比',
+        //     textStyle: {
+        //         color: "#fff",
+        //     }
+        // },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: line_smooth_x_data,
+            name: "小时/h",
+            nameTextStyle: {
+                color: "#fff"
+            },
+            axisLabel: {
+                color: "#fff",
+            }
+        },
+        yAxis: {
+            type: 'value',
+            // boundaryGap配置该轴的最小值和最大值的最大留空。10%即表示超过最大值10%的高度
+            boundaryGap: [0, '10%'],
+            name: "道路拥堵占比/%",
+            nameTextStyle: {
+                color: "#fff"
+            },
+            axisLabel: {
+                color: "#fff",
+            }
+
+        },
+        dataZoom: [{
+            type: 'inside',
+            start: 0,
+            end: 100,
+            show: true,
+        }, {
+            start: 0,
+            end: 24,
+            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleSize: '50%',
+            handleStyle: {
+                color: '#fff',
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }],
+        series: [
+            {
+                name: '拥堵道路占比',
+                type: 'bar',
+                // smooth: true,
+                symbol: 'none',
+                sampling: 'average',
+                itemStyle: {
+                    color: 'rgb(255, 70, 131)'
+                },
+                data: line_smooth_y_data
+            }
+        ]
+    };
+    percent_Chart.setOption(option);
+</script>
+
+</html>

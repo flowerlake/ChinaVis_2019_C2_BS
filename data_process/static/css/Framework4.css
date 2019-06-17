@@ -1,0 +1,380 @@
+html{
+ font-size: 100px;
+}
+html, body, header,article, nav, ul, li{margin: 0; padding: 0;}
+html, body, .container,.herder_bg {
+    height: 100%;
+}
+*{
+    box-sizing:border-box
+}
+ul, ol, dd {
+  list-style-type:none;
+  margin-left:0;
+  padding-left:0;
+ }
+a {
+ text-decoration:none;
+ color:#1580da;
+}
+
+body{
+  font-size:0.16rem;
+  color: #ffffff;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+}
+
+
+.container {
+     padding:0.1rem;
+     background-image: url(../image/background.jpg);
+     background-position: center center;
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     background-size: cover;
+     background-color:#1b2852;
+     font-family: 'microsoft yahei',Arial,sans-serif;
+
+}
+
+header {
+    height: 6%;
+    padding-bottom: 0.1rem;
+}
+
+.herder_bg{
+    width: 100%;
+
+    /*color: #6cbbe6;*/
+    /*font-size: 24px;*/
+    /*font-weight: bold;*/
+    /*text-align: center;*/
+    background: url(../image/WechatIMG418.png);
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+}
+
+#switch_btn1{
+    background-image: url(../image/4-1.png);
+    width:0.45rem;
+    height:0.45rem;
+    position:absolute;
+    top:0.15rem;
+    right:1.4rem;
+    z-index: 99999;
+    background-size: cover;
+}
+
+#switch_btn2{
+    background-image: url(../image/4-1.png);
+    width:0.45rem;
+    height:0.45rem;
+    position:absolute;
+    top:0.15rem;
+    left:0.2rem;
+    z-index: 99999;
+    background-size: cover;
+}
+
+#switch_btn3 {
+    background-image: url(../image/4-1.png);
+    width: 0.45rem;
+    height: 0.45rem;
+    position: absolute;
+    top: 0.15rem;
+    right: 0.8rem;
+    z-index: 99999;
+    background-size: cover;
+}
+#switch_btn4 {
+    background-image: url(../image/4-1.png);
+    width: 0.45rem;
+    height: 0.45rem;
+    position: absolute;
+    top: 0.15rem;
+    right: 0.2rem;
+    z-index: 99999;
+    background-size: cover;
+}
+#switch_btn5 {
+    background-image: url(../image/4-1.png);
+    width: 0.45rem;
+    height: 0.45rem;
+    position: absolute;
+    top: 0.15rem;
+    left: 0.8rem;
+    z-index: 99999;
+    background-size: cover;
+}
+
+article {
+    width: 100%;
+    height:94% ;
+    padding-bottom: 0.1rem;
+}
+
+#hideleft{
+    background-image: url(../image/left.png);
+    width:0.12rem;
+    height:0.44rem;
+    position:absolute;
+    top:50%;
+    left: 0;
+    z-index: 99999;
+}
+
+#hideright{
+    background-image: url(../image/right.png);
+    width:0.12rem;
+    height:0.44rem;
+    position:absolute;
+    top:50%;
+    right:0;
+    z-index: 99999;
+}
+
+.wrap{
+    width: 100%;
+    height: 120%;
+    float: left;
+
+}
+
+.wrap_top {
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+.wrap_bot {
+    width: 100%;
+    height: 00%;
+    float: left;
+}
+
+.wrap-left {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.wrap-right {
+    width: 46%;
+    height: 100%;
+    float: right;
+    /*margin-left: -10%;*/
+}
+
+.left_margin,.right_margin{
+    float: left;
+    width: 25%;
+    height: 100%;
+    z-index: 1;
+}
+
+.left_margin {
+    position:relative;
+    margin-left: -100%;
+    padding-right:0.15rem ;
+     z-index: 3;
+}
+
+.right_margin{
+    position:relative;
+    margin-top: 20%;
+    margin-left: 1%;
+    padding-left:0.15rem ;
+     z-index: 13;
+}
+.wrap .center{
+    position:relative;
+    margin:0 -3%;
+    height: 110%;
+    background-image: url(../image/5-3dt.png);
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    z-index: 2;
+    /*margin-left: -30%;*/
+    /*margin-left: 25% ;*/
+    /*margin-right: 25%;*/
+}
+
+
+.sun-div{
+    width: 120%;
+    height: 37%;
+    background: url(../image/1-2.png) no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    margin-bottom: 0.17rem;
+    padding:0.15rem;
+}
+
+.sun-div1{
+    width: 220%;
+    height: 25%;
+    background: url(../image/1-2.png) no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    margin-bottom: 0.17rem;
+    padding:0.15rem;
+}
+.sun-div2{
+    width: 120%;
+    height: 40%;
+    background: url(../image/1-2.png) no-repeat;
+    /*background-size: 100% 100%;*/
+    /*background-color: #0078A8;*/
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    margin-top: 0.17rem;
+    margin-bottom: 0.17rem;
+    padding:0.15rem;
+}
+
+.sun-div3{
+    width: 120%;
+    height: 35%;
+    background: url(../image/1-2.png) no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    margin-bottom: 0.17rem;
+    padding:0.15rem;
+}
+
+.sun-title{
+    height: 0.4rem;
+    line-height: 0.4rem;
+    padding-left: 0.1rem;
+    font-size: 0.16rem;
+    font-weight:normal;
+    background: url(../image/2-1.png) no-repeat;
+    -moz-background-size:100% 100%;
+    background-size:100% 100%;
+
+}
+
+.left-ec{
+    width: 100%;
+    height: 1.9rem;
+}
+.left-ec1{
+    width: 100%;
+    height: 200px;
+}
+
+.left-top {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 1.5%;
+    padding: 0.05rem;
+    background: url(../image/1-1.png) no-repeat;
+}
+.right-top {
+    width: 100%;
+    height: 50%;
+    margin-bottom: 1.5%;
+    padding: 0.15rem;
+    background: url(../image/1-3.png);
+}
+/* 右侧列表样式 */
+
+.sun-div ul {
+    padding: 0 15px;
+}
+.data-contents-height {
+    box-sizing: border-box;
+    min-height: 160px;
+}
+
+.sun-div ul li {
+    /*     height: 30px;
+         */    line-height: 30px;
+    border-bottom: 1px solid rgba(67,104,199,.2);
+    color: #3690ff;
+}
+.litext{
+    display: inline-block;
+    vertical-align:middle;
+    width:39%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255,255,255,.7);
+    padding: 0 24px;
+}
+.litext hover{
+    display: inline-block;
+    vertical-align:middle;
+    width:39%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255,255,255,.7);
+    padding: 0 24px;
+}
+.r {
+    float: right;
+}
+.sun-div ul li span.unchanged1 {
+    width:70px;
+    text-align: center;
+}
+
+.sun-div ul li span.unchanged {
+    padding: 0 0 0 5px;
+    width:45px;
+    text-align: right;
+}
+
+/*加*/
+
+#console {
+    position: absolute;
+    width: 380px;
+    margin: 0px;
+    /*padding: 10px 20px;*/
+
+}
+
+.session {
+    margin-bottom: 10px;
+}
+
+.row {
+    height: 12px;
+    width: 100%;
+}
+
+.colors {
+    background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
+    margin-bottom: 5px;
+}
+
+.label {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+}
+/*maker突出项*/
+.marker {
+  background-image: url('../image/mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
